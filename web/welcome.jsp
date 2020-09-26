@@ -9,6 +9,10 @@
 <html>
 <head>
     <title>Welcome</title>
+    <link href='https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/form.css">
+    <link rel="stylesheet" href="css/accordion.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" ></script>
 </head>
 <style>
     body {
@@ -35,27 +39,24 @@
 </ul>
 
 <form action="FileUploadServlet" method="post" enctype="multipart/form-data">
-    <table width="400px" align="center" border=2>
-        <tr>
-            <td align="center" colspan="2">Image upload form</td>
-        </tr>
-        <tr>
-            <td>Image Link:</td>
-            <td>
-                <input type="file" name="file">
-            </td>
-        </tr>
-        <tr>
-            <td>Image Description:</td>
-            <td>
-                <input type="text" name="description">
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Submit"></td>
-        </tr>
-    </table>
+    <h1><strong>Image upload</strong> form with style and pure CSS</h1>
+    <div class="form-group">
+        <label for="title">Image description <span>Use description to get a better result</span></label>
+        <input type="text" name="description" id="title" class="form-controll"/>
+    </div>
+    <div class="form-group file-area">
+        Images <span>Your images should be at least 400x300 wide</span>
+        <input type="file" name="file">
+        <div class="file-dummy">
+            <div class="success">Great, your files are selected. Keep on.</div>
+            <div class="default">Please select some pictures</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Upload Image">
+    </div>
+
+
 </form>
 <br>
 <h2>View my current images</h2>
@@ -63,16 +64,26 @@
 <a href='display.jsp?id="<%=(int)session.getAttribute("id")%>"'>Display</a>
 <%--<center><a href="viewAll.jsp">View All </a></center>--%>
 
-
-<h4>Website info:</h4>
+<div class="accordion">
+    <div class="accordion-item">
+<a>Website info:</a>
+        <div class="content">
 <p>Servlet version: <%= getServletInfo() %>
 </p>
 <p>Servlet container used: <%= application.getServerInfo() %>
 </p>
-<h4>Contact info:</h4>
+        </div>
+    </div>
+        <div class="accordion-item">
+<a>Contact info:</a>
+            <div class="content">
 <p>duman070601@gmail.com</p>
 <p>a.zholamanov@astanait.edu.kz</p>
 <p>a.imangazin@astanait.edu.kz</p>
-
+            </div>
+        </div>
+    </div>
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+<script  src="javascript/toggle.js"></script>
 </body>
 </html>

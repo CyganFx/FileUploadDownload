@@ -11,7 +11,7 @@ public class Dao {
     protected PreparedStatement statement;
     protected ResultSet resultSet;
     private final String USERNAME = "postgres";
-    private final String PASSWORD = "duman070601";
+    private final String PASSWORD = "alimzhan125";
     private String query;
 
 
