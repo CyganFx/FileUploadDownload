@@ -45,6 +45,14 @@
         <servlet-name>FileDownloadServlet</servlet-name>
         <url-pattern>/FileDownloadServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>FileDeleteServlet</servlet-name>
+        <servlet-class>Servlets.FileDeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FileDeleteServlet</servlet-name>
+        <url-pattern>/FileDeleteServlet</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>login</servlet-name>

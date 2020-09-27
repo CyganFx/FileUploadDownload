@@ -2,6 +2,7 @@ package Servlets;
 
 import Classes.Dao;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +17,7 @@ import java.io.PrintWriter;
         maxRequestSize = 1024 * 1024 * 50)
 public class FileUploadServlet extends HttpServlet {
     public static final String UPLOAD_DIR = "images";
-    public String dbFileName = "";
+    public String folderAndFilename = "";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -27,7 +28,7 @@ public class FileUploadServlet extends HttpServlet {
         int id = (Integer) session.getAttribute("id");
         String description = request.getParameter("description");
 
-        Part part = request.getPart("file");//
+        Part part = request.getPart("file");
         String fileName = extractFileName(part);//file name
 
         String applicationPath = getServletContext().getRealPath("");
@@ -45,10 +46,10 @@ public class FileUploadServlet extends HttpServlet {
         part.write(savePath + File.separator);
 
         File fileSaveDir1 = new File(savePath);
-        dbFileName = UPLOAD_DIR + File.separator + fileName;
+        folderAndFilename = UPLOAD_DIR + File.separator + fileName;
         part.write(savePath + File.separator);
 
-        if (dao.fileUpload(id, dbFileName, savePath, description)) {
+        if (dao.fileUpload(id, folderAndFilename, savePath, description)) {
             out.println("<center><h1>Image inserted Succesfully......</h1></center>");
             out.println("<center><a href='display.jsp?id=" + id + "'>Display</a></center>");
         } else {
@@ -65,5 +66,11 @@ public class FileUploadServlet extends HttpServlet {
             }
         }
         return "";
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        System.out.println("Browser thinks you're on " + getServletName() + " page");
     }
 }

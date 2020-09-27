@@ -14,7 +14,6 @@ public class Dao {
     private final String PASSWORD = "duman070601";
     private String query;
 
-
     private void getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");
         connection = DriverManager
@@ -81,6 +80,20 @@ public class Dao {
             statement.setString(2, fileName);
             statement.setString(3, savePath);
             statement.setString(4, description);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean fileDelete(int id, String fileName) {
+        try {
+            getConnection();
+            statement = connection.prepareStatement("delete from images where id = ? and file_name = ?");
+            statement.setInt(1, id);
+            statement.setString(2,fileName);
             statement.executeUpdate();
             return true;
         } catch (SQLException | ClassNotFoundException e) {

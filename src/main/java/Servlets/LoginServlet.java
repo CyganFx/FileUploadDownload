@@ -2,6 +2,7 @@ package Servlets;
 
 import Classes.BadLoginException;
 import Classes.Dao;
+import Classes.EmailValidator;
 import Classes.User;
 
 import javax.servlet.RequestDispatcher;
@@ -22,36 +23,42 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         PrintWriter pw = response.getWriter();
 
-        if (email.equals("stupidAdmin@gmail.com") || email.equals("stupidAdmin@mail.ru") || email.equals("stupidAdmin@astanait.edu.kz")) {
-            try {
-                throw new BadLoginException("Don't say bad words to admin, please((");
-            } catch (BadLoginException e) {
-                pw.println("This is a custom exception: " + e.getClass());
-                pw.println(e.getMessage());
-            }
+        if (!EmailValidator.validate(email)) {
+            pw.println("Regex checking...");
+            pw.println("Email must contain (@) and (.) signs! Try again");
         } else {
-            Dao dao = new Dao();
-
-            if (dao.checkLogin(email, password)) {
-                HttpSession session = request.getSession();
-                User user = new User();
-
-                user.setEmail(email);
-                user.setPassword(password);
-
-                user = dao.setUserValues(user);
-                setUserSessions(user, session);
-
-                request.setAttribute("user", user);
-
-                RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp");
-                dispatcher.forward(request, response);
+            if (email.equals("stupidAdmin@gmail.com") ||
+                    email.equals("stupidAdmin@mail.ru") ||
+                    email.equals("stupidAdmin@astanait.edu.kz")) {
+                try {
+                    throw new BadLoginException("Don't say bad words to admin, please((");
+                } catch (BadLoginException e) {
+                    pw.println("This is a custom exception: " + e.getClass());
+                    pw.println(e.getMessage());
+                }
             } else {
-                response.sendRedirect(request.getContextPath() + "/id-check?id=" + getServletContext().getInitParameter("correctId"));
+                Dao dao = new Dao();
+
+                if (dao.checkLogin(email, password)) {
+                    HttpSession session = request.getSession();
+                    User user = new User();
+
+                    user.setEmail(email);
+                    user.setPassword(password);
+
+                    user = dao.setUserValues(user);
+                    setUserSessions(user, session);
+
+                    request.setAttribute("user", user);
+
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("welcome.jsp");
+                    dispatcher.forward(request, response);
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/id-check?id=" + getServletContext().getInitParameter("correctId"));
+                }
             }
         }
     }
-
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
