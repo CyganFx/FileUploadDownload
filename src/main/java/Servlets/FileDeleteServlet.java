@@ -1,6 +1,7 @@
 package Servlets;
 
 import Classes.Dao;
+import dao.FileDao;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 @WebServlet(name = "Servlets.FileDeleteServlet")
 public class FileDeleteServlet extends HttpServlet {
@@ -18,13 +20,22 @@ public class FileDeleteServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         Dao dao = new Dao();
         HttpSession session = request.getSession();
-        int id = (int) session.getAttribute("id");
+        int id = Integer.parseInt(request.getParameter("fileid"));
         String fileName = request.getParameter("filename");
-        String path = getServletContext().getRealPath("/" + FileUploadServlet.UPLOAD_DIR + File.separator + fileName);
-        File dwFile = new File(path);
+        out.print(id);
+        FileDao fileDao = new FileDao();
+        Classes.File file = null;
+        try {
+            file = fileDao.getFileByFileName(fileName);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        File dwFile = new File(file.getPath());
         if (!dwFile.isDirectory()) {
             dwFile.delete();
-            if (dao.fileDelete(id, FileUploadServlet.UPLOAD_DIR + File.separator + fileName)) {
+            if (dao.fileDelete(id, file.getFileName())) {
                 out.println("<center><h1>Image Deleted Succesfully......</h1></center>");
                 out.println("<center><a href='display.jsp?id=" + id + "'>Get Back</a></center>");
             } else {

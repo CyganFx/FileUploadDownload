@@ -12,11 +12,12 @@
 </head>
 <body>
 <%
+
     int userId = (int) session.getAttribute("id");
     String applicationPath = application.getRealPath("");
     try {
         Class.forName("org.postgresql.Driver");
-        Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/users", "postgres", "duman070601");
+        Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/users", "postgres", "1952");
         Statement st = con.createStatement();
         String sql = "SELECT file_name, description FROM images where id=" + userId + "";
         ResultSet rs = st.executeQuery(sql);

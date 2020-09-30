@@ -1,5 +1,7 @@
 package Servlets;
 
+import dao.FileDao;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,13 +10,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 @WebServlet(name = "Servlets.FileDownloadServlet")
 public class FileDownloadServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try (PrintWriter out = response.getWriter()) {
-            String fileName = request.getParameter("filename");
-            String path = getServletContext().getRealPath("/" + "images" + File.separator + fileName);
+            FileDao fileDao = new FileDao();
+            Classes.File file = fileDao.getFileByFileName(request.getParameter("filename"));
+            String path = file.getPath();
             File dwFile = new File(path);
             if (dwFile.exists()) {
                 response.setContentType("application/octet-stream");
@@ -32,6 +36,10 @@ public class FileDownloadServlet extends HttpServlet {
             } else {
                 out.println("Sorry, file not found...");
             }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

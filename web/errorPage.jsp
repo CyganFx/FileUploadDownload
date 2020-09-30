@@ -9,7 +9,7 @@
         }
 
         .error {
-            color: red;
+            color: #ff0000;
         }
     </style>
 </head>

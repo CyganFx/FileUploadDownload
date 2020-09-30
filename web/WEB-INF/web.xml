@@ -30,6 +30,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>FolderServlet</servlet-name>
+        <servlet-class>Servlets.FolderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FolderServlet</servlet-name>
+        <url-pattern>/FolderServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>FileUploadServlet</servlet-name>
         <servlet-class>Servlets.FileUploadServlet</servlet-class>
     </servlet>

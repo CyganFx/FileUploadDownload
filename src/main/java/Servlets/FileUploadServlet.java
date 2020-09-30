@@ -25,14 +25,14 @@ public class FileUploadServlet extends HttpServlet {
         Dao dao = new Dao();
         PrintWriter out = response.getWriter();
 
-        int id = (Integer) session.getAttribute("id");
-        String description = request.getParameter("description");
+        int id = (Integer) session.getAttribute("folderid");
+        String description = request.getParameter("fileDesc");
 
         Part part = request.getPart("file");
         String fileName = extractFileName(part);//file name
 
         String applicationPath = getServletContext().getRealPath("");
-        String uploadPath = applicationPath + File.separator + UPLOAD_DIR;
+        String uploadPath = applicationPath + UPLOAD_DIR + File.separator + session.getAttribute("foldername");
         System.out.println("applicationPath:" + applicationPath);
         File fileUploadDirectory = new File(uploadPath);
         if (!fileUploadDirectory.exists()) {
@@ -46,12 +46,12 @@ public class FileUploadServlet extends HttpServlet {
         part.write(savePath + File.separator);
 
         File fileSaveDir1 = new File(savePath);
-        folderAndFilename = UPLOAD_DIR + File.separator + fileName;
+        folderAndFilename = fileName;
         part.write(savePath + File.separator);
 
         if (dao.fileUpload(id, folderAndFilename, savePath, description)) {
             out.println("<center><h1>Image inserted Succesfully......</h1></center>");
-            out.println("<center><a href='display.jsp?id=" + id + "'>Display</a></center>");
+            out.println("<center><a href='main.jsp" + "'>Display</a></center>");
         } else {
             out.println("<center> Error occurred </center>");
         }
