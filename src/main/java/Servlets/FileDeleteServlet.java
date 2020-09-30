@@ -37,7 +37,7 @@ public class FileDeleteServlet extends HttpServlet {
             dwFile.delete();
             if (dao.fileDelete(id, file.getFileName())) {
                 out.println("<center><h1>Image Deleted Succesfully......</h1></center>");
-                out.println("<center><a href='display.jsp?id=" + id + "'>Get Back</a></center>");
+                out.println("<center><a href='main.jsp'>Get Back</a></center>");
             } else {
                 out.println("<center> File was not deleted from database, strange... </center>");
             }
